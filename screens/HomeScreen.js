@@ -7,10 +7,13 @@ import Services from '../components/Services';
 import DressItem from '../components/DressItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../ProductReducer';
+import { useNavigation } from '@react-navigation/native';
 
 
 const HomeScreen = () => {
+	const navigation = useNavigation();
 	const cart = useSelector((state) => state.cart.cart)
+	const total = cart.map((item) => item.quantity * item.price).reduce((curr, prev) => curr + prev, 0)
 	console.log(cart)
 	const [displayCurrentAddress, setDisplayCurrentAddress] = useState('Location loading');
 	const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
@@ -78,50 +81,50 @@ const HomeScreen = () => {
 			image: "https://img.icons8.com/?size=2x&id=ZIVF0QYTfwVg&format=png",
 			name: "Shirt",
 			quantity: 0,
-			price: 90,
+			price: 10,
 		},
 		{
 			id: "2",
 			image: "https://img.icons8.com/?size=2x&id=zahUGshfj0Yg&format=png",
 			name: "Dress",
 			quantity: 0,
-			price: 100,
+			price: 10,
 		},
 		{
 			id: "3",
 			image: "https://img.icons8.com/?size=2x&id=MBqzh0SLQ7WZ&format=png",
 			name: "Towel",
 			quantity: 0,
-			price: 150,
+			price: 20,
 		},
 		{
 			id: "4",
 			image: "https://img.icons8.com/?size=2x&id=37752&format=png",
 			name: "Shorts",
 			quantity: 0,
-			price: 150,
+			price: 15,
 		},
 		{
 			id: "5",
 			image: "https://img.icons8.com/?size=2x&id=2ASLK79obvah&format=png",
-			name: "Sneakers",
+			name: "Shoes",
 			quantity: 0,
-			price: 150,
+			price: 10,
 		},
 		{
 			id: "6",
 			image: "https://img.icons8.com/?size=2x&id=105165&format=png",
 			name: "T-shirt",
 			quantity: 0,
-			price: 150,
+			price: 10,
 		},
 
 
 
 	]
 	return (
-		<SafeAreaView>
-			<View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+		<>
+			<View style={{ flexDirection: "row", alignItems: "center", padding: 10, marginTop: 50 }}>
 				<Entypo name="location" size={30} color="#318CE7" style={{ marginLeft: 5 }} />
 				<View>
 
@@ -132,7 +135,7 @@ const HomeScreen = () => {
 					<Image style={{ width: 40, height: 40, borderRadius: 20 }} source={{ uri: "https://lh3.google.com/u/0/ogw/AGvuzYZHUKc1FlzPQOxq9SGLwkJvT_bjNZW0aaYEJwOm=s64-c-mo" }} />
 				</TouchableOpacity>
 			</View>
-			<ScrollView>
+			<ScrollView >
 				<Carousel />
 				<View style={{ flexDirection: "row", justifyContent: "space-between", borderWidth: 1, borderRadius: 25, borderColor: "gray", margin: 20, padding: 15, alignItems: "Center" }}>
 					<TextInput placeholder="Search for a particular item or shop" />
@@ -144,7 +147,21 @@ const HomeScreen = () => {
 					<DressItem item={service} key={index} />
 				))}
 			</ScrollView>
-		</SafeAreaView>
+			{total === 0 ? (
+				null
+			) : (
+				<TouchableOpacity style={{ backgroundColor: "#318CE7", padding: 10, marginBottom: 30, margin: 15, borderRadius: 15, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+					<View>
+						<Text style={{ fontSize: 15, fontWeight: "600", color: "white" }}>{cart.length} items | £ {total}</Text>
+						<Text style={{ fontSize: 13, fontWeight: "500", color: "white", marginVertical: 6 }}>Additional charges may apply</Text>
+					</View>
+					<TouchableOpacity style={{ backgroundColor: "white", borderRadius: 10 }} onPress={() => navigation.navigate("Pickup")}>
+						<Text style={{ fontSize: 18, fontWeight: "600", padding: 10, }}>pickup</Text>
+					</TouchableOpacity>
+				</TouchableOpacity>
+			)}
+
+		</>
 
 	);
 };

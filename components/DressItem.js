@@ -19,7 +19,7 @@ const DressItem = ({ item }) => {
             </View>
             <View>
                 <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "500" }}>{item.name}</Text>
-                <Text>GHS {item.price}</Text>
+                <Text>£{item.price}</Text>
             </View>
             {cart.some((c) => c.id === item.id) ? (
                 <TouchableOpacity style={{ flexDirection: "row", paddingHorizontal: 10, paddingVertical: 5 }}>
