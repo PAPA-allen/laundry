@@ -8,6 +8,8 @@ import DressItem from '../components/DressItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../ProductReducer';
 import { useNavigation } from '@react-navigation/native';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 
 const HomeScreen = () => {
@@ -15,6 +17,7 @@ const HomeScreen = () => {
 	const cart = useSelector((state) => state.cart.cart)
 	const total = cart.map((item) => item.quantity * item.price).reduce((curr, prev) => curr + prev, 0)
 	console.log(cart)
+	const [items, setItems] = useState([])
 	const [displayCurrentAddress, setDisplayCurrentAddress] = useState('Location loading');
 	const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
 	useEffect(() => {
@@ -69,8 +72,13 @@ const HomeScreen = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (product.length > 0) return;
-		const fetchProducts = () => {
-			services.map((service) => dispatch(getProduct(service)))
+		const fetchProducts = async () => {
+			const colRef = collection(db, "types");
+			const docSnap = await getDocs(colRef)
+			docSnap.forEach((doc) => {
+				items.push(doc.data());
+			});
+			items?.map((service) => dispatch(getProduct(service)))
 		};
 		fetchProducts();
 	}, []);
@@ -131,7 +139,7 @@ const HomeScreen = () => {
 					<Text>{displayCurrentAddress}</Text>
 				</View>
 
-				<TouchableOpacity style={{ marginLeft: "auto", marginRight: 7 }}>
+				<TouchableOpacity style={{ marginLeft: "auto", marginRight: 7 }} onPress={() => navigation.navigate("Profile")}>
 					<Image style={{ width: 40, height: 40, borderRadius: 20 }} source={{ uri: "https://lh3.google.com/u/0/ogw/AGvuzYZHUKc1FlzPQOxq9SGLwkJvT_bjNZW0aaYEJwOm=s64-c-mo" }} />
 				</TouchableOpacity>
 			</View>

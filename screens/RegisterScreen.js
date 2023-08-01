@@ -31,6 +31,7 @@ const RegisterScreen = () => {
             const myUserId = auth.currentUser.uid;
 
             setDoc(doc(db, "users", `${myUserId}`), {
+                name: name,
                 email: user,
                 phone: phone
             })
