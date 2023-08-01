@@ -3,16 +3,28 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { decrementQuantity, incrementQuantity } from '../CartReducer';
+import { cleanCart, decrementQuantity, incrementQuantity } from '../CartReducer';
 import { decrementQty, incrementQty } from '../ProductReducer';
+import { auth } from '../firebase';
 
 const CartScreen = () => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const route = useRoute()
+    const userUid = auth.currentUser.uid
     const cart = useSelector((state) => state.cart.cart)
     const total = cart.map((item) => item.quantity * item.price).reduce((curr, prev) => curr + prev, 0)
-    const placeOrder = () => { }
+    const placeOrder = async () => {
+        navigation.navigate("Order")
+        dispatch(cleanCart());
+        await setDoc(doc(db, "users", `${userUid}`), {
+            orders: { ...cart },
+            pickUpDetails: route.params
+        },
+            {
+                merge: true
+            })
+    }
     return (
         <>
             <ScrollView style={{ marginTop: 50 }}>

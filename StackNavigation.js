@@ -8,6 +8,7 @@ import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import OrderScreen from './screens/OrderScreen';
 
 
 const StackNavigation = () => {
@@ -21,6 +22,7 @@ const StackNavigation = () => {
                 <Stack.Screen name="Pickup" component={PickUpScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Cart" component={CartScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Order" component={OrderScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
