@@ -80,7 +80,7 @@ const PickUpScreen = () => {
                     mode="gregorian"
                     startDate={new Date('2023-08-20')}
                     endDate={new Date('2023-08-31')}
-                    initialSelectedDate={new Date('2023-08-22')}
+                    // initialSelectedDate={new Date('2023-08-22')}
                     onSelectedDateChange={(date) => setSelectedDate(date)}
                     selectedItemWidth={170}
                     unselectedItemWidth={38}
